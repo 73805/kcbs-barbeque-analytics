@@ -12,8 +12,11 @@ contest_links = []
 years = range(2013, 2017)
 
 for year in years:
+    if year == 2013:
+        pageUrl = "http://www.kcbs.us/events/" + str(year) + "/0/1"
+    else:
+        pageUrl = "http://www.kcbs.us/events/" + str(year) + "/0/1"
     # go to a contest listing page
-    pageUrl = "http://www.kcbs.us/events/" + str(year) + "/0/1"
     driver.get(pageUrl)
     # select all the contest <a> tag elements
     a_tag_elements = driver.find_elements_by_css_selector("#mainContentInterior > table > tbody > tr > td > strong > a")
