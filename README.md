@@ -6,9 +6,9 @@ This project explores KCBS competition data from 2013-2016. I used Python (selen
 
 The visuals folder contains choropleths on three measures in the data. These maps were made with Tableau. They include;
 
-* competitions per state - [link](kcbs-barbeque-analytics/visuals/KCBS Average Prizing 2016.png)
-* total prize dollars per state - [link](kcbs-barbeque-analytics/visuals/KCBS Average Prizing 2016.png)
-* average prize dollars per (prized) competition - [link](kcbs-barbeque-analytics/visuals/KCBS Average Prizing 2016.png)
+* competitions per state (red)
+* total prize dollars per state (green)
+* average prize dollars per (prized) competition (gold)
 
 ## Scoring
 
