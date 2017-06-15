@@ -1,6 +1,6 @@
 # KCBS Barbeque Competition Analytics
 
-This project gathers KCBS Barbeque competition data from 2013-2016 from the KCBS website using Python web scraping (selenium, beautiful soup). Data analysis will include choropleths (colored maps) based on competition meta-data, and state-by-state score data comparisons.
+This project explores KCBS competition data from 2013-2016. I used Python (selenium, beautiful soup) to pull the data from the KCBS website. Data analysis will include choropleths (colored maps) based on competition meta-data, and state-by-state score data comparisons.
 
 ## Choropleths
 
