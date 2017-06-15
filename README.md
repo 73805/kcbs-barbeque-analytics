@@ -1,10 +1,18 @@
-**KCBS Barbeque Competition Analytics**
+* KCBS Barbeque Competition Analytics *
 
-This project gathers KCBS Barbeque competition data from 2013-2016 in Python. Competition data was parsed from the HTML of the KCBS website. The main libraries used in this project are Python's Requests, BeautifulSoup4 and Pandas.
+This project gathers KCBS Barbeque competition data from 2013-2016 from the KCBS website using Python web scraping (selenium, beautiful soup). Data analysis will include choropleths (colored maps) based on competition meta-data, and state-by-state score data comparisons.
 
-**WIP**
+** Choropleths **
 
-The next step in this project is analysis of regional scoring trends at the state level. I intend to produce geographic visualizations of scoring data, and answer questions about which states perform most strongly by various metrics. Additional questions for analysis may come up over the course of the project. I have directly requested data from KCBS (individual judge data, accurate team data etc), but I have not received a response to date.
+The visuals folder contains choropleths on three measures in the data. These maps were made with Tableau. They include;
+
+* competitions per state - [link](kcbs-barbeque-analytics/visuals/KCBS Average Prizing 2016.png)
+* total prize dollars per state - [link](kcbs-barbeque-analytics/visuals/KCBS Average Prizing 2016.png)
+* average prize dollars per (prized) competition - [link](kcbs-barbeque-analytics/visuals/KCBS Average Prizing 2016.png)
+
+** Scoring **
+
+In Progress. Comparisons between category score distributions across states are made difficult by the relative (and partially subjective) scoring process.
 
 Competition Data: http://www.kcbs.us/events.
 
