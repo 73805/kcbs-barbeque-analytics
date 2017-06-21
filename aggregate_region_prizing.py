@@ -10,7 +10,7 @@ df = pd.read_pickle('pkls/contest_data_cleaned_2016.pkl')
 
 demo_row = {'state': 'NA', 'state_full': 'NA', 'contest_count': 0, 'chicken_score': 0,
             'ribs_score': 0, 'pork_score': 0, 'brisket_score': 0,
-            'overall_score': 0, 'best_category': 'NA',
+            'overall_score': 0, 'best_category': 'NA', 'non_standards': 0,
             'prize_total': 0, 'prize_count': 0, 'prize_average_prized': 0, 'prize_average_all': 0}
 sf = pd.DataFrame(data=None, columns=demo_row.keys())
 
@@ -36,6 +36,7 @@ for state in contest_states:
     new_row['contest_count'] = state_df.shape[0]
     new_row['prize_total'] = state_df.prize.sum()
     new_row['prize_count'] = new_row['contest_count'] - ((state_df.prize == 0.0).sum())
+    new_row['non_standards'] = state_df.standard.sum()
 
     # create new scoring 'sheet' to aggregate category-specific scores
     score = score_demo.copy()

@@ -47,7 +47,7 @@ for i, row in real_df.iterrows():
 print "Split location column into city and state columns!"
 
 real_df = real_df[real_df.keep == True]
-rea_df = real_df.drop('keep', 1)
+
 print "Removed contests from outside of the 50 States."
 
 # Convert CBJ% to Float 0:100, and normalize Prize values
@@ -88,7 +88,8 @@ real_df.date = pd.to_datetime(real_df.date_str, infer_datetime_format=True)
 print "Converted Date strings to datetimes!"
 
 # Remove competitions before the scoring update (July 13, 2013)
-early_cutoff = datetime.date(2013, 6, 13)
+early_cutoff = datetime.date(2013, 7, 13)
+# early_cutoff = datetime.date(2016, 1, 1)
 real_df = real_df[real_df.date > early_cutoff]
 
 print "Removed Competitions pre-dating scoring changes!"

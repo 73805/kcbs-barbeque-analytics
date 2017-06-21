@@ -3,11 +3,16 @@ import os
 import bs4
 import pandas as pd
 
+# define a demo row for copying/updating
+row_demo = {"url": "NA", "title": "NA", "location": "NA", "date_str": "NA",
+            "prize": "NA", "cbj_percentage": "NA", "champ_bool": "NA", "overall": "NA",
+            "chicken": "NA", "ribs": "NA", "pork": "NA", "brisket": "NA", "standard": "NA"}
+
 # initialize main Data Frame
-column_headers = ["url", "title", "location", "date_str", "prize", "cbj_percentage", "champ_bool",
-                  "overall", "chicken", "ribs", "pork", "brisket"]
+column_headers = row_demo.keys()
 data = pd.DataFrame(columns=column_headers)
 
+# Iterate the downloaded html files
 directory = "contest_html"
 for i, fn in enumerate(os.listdir(directory)):
     if fn.endswith(".html"):
@@ -15,9 +20,8 @@ for i, fn in enumerate(os.listdir(directory)):
         with open(fnj, 'rb') as fc:
             contest = bs4.BeautifulSoup(fc)
 
-        row_dict = {"url": "NA", "title": "NA", "location": "NA", "date_str": "NA", "prize": "NA",
-                    "cbj_percentage": "NA", "champ_bool": "NA", "overall": "NA",
-                    "chicken": "NA", "ribs": "NA", "pork": "NA", "brisket": "NA"}
+        # initiate a new default row
+        row_dict = row_demo.copy()
 
         # url
         url = "http://www.kcbs.us/event/" + fn[:4] + "/" + fn[5:-5]
@@ -29,7 +33,7 @@ for i, fn in enumerate(os.listdir(directory)):
             title = title_handle[0].text.strip()
             row_dict["title"] = title
 
-        # location / date
+        # location / date as string
         sub_head = contest.select("#event_subhead")
         if len(sub_head) > 0:
             sub_head = sub_head[0]
@@ -41,20 +45,24 @@ for i, fn in enumerate(os.listdir(directory)):
                 row_dict["date_str"] = date_str
 
         # Meta Data
-        meta_dict = {"website": "NA", "kcbs reps": "NA", "contest number": "NA", "prize money": "NA",
-                     "cbj percentage": "NA"}
+        meta_dict = {"website": "NA", "kcbs reps": "NA", "contest number": "NA",
+                     "prize money": "NA", "cbj percentage": "NA"}
         p_tags = contest.select("p")
         for tag in p_tags:
             text = tag.text
+            # get a hold of the unlabelled meta-data <p> tag
             if "Contest Number:" in text:
                 meta_data = text.split("\n")
+                # unpack the unlabelled meta-data lines by their standardized left sides
+                # (the left sides make up the meta_dict keys)
                 for line in meta_data:
                     line = line.split(":")
                     if len(line) == 2:
                         key = line[0].strip().lower()
                         value = line[1].strip()
+                        # minor adjustments to the prize money string
                         if key == "prize money":
-                            value = float(value[1:].replace(",",""))
+                            value = float(value[1:].replace(",", ""))
                         meta_dict[key] = value
 
         row_dict["prize"] = meta_dict["prize money"]
@@ -71,6 +79,7 @@ for i, fn in enumerate(os.listdir(directory)):
         # Contest Result DataFrames
         df_dict = {"overall": "NA", "chicken": "NA", "ribs": "NA", "pork": "NA", "brisket": "NA"}
         valids = df_dict.keys()
+        non_valids = 0
         sub_cols = ["place", "name", "score"]
         result_html = contest.select("div.grid07.float20 table.contestResults")
         if len(result_html) > 0:
@@ -97,8 +106,17 @@ for i, fn in enumerate(os.listdir(directory)):
                                 new_result_row = [place, team_name, score]
                                 df_dict[table_name].loc[-1] = new_result_row
                                 df_dict[table_name].index = df_dict[table_name].index + 1
+                    else:
+                        # an invalid category could mess-up the overall scores
+                        non_valids += 1
+
         for key in valids:
             row_dict[key] = df_dict[key]
+
+        if non_valids == 0:
+            row_dict['standard'] = True
+        else:
+            row_dict['standard'] = False
 
         # Insert into table
         data.loc[-1] = row_dict
@@ -111,5 +129,5 @@ for i, fn in enumerate(os.listdir(directory)):
         print fn
         break
 
-with open('pkls/contest_data.pkl', 'wb') as f:
+with open('pkls/contest_data_raw.pkl', 'wb') as f:
     pickle.dump(data, f)

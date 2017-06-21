@@ -8,11 +8,11 @@ df = pd.read_pickle('pkls/contest_data_cleaned.pkl')
 
 contest_states = list(df.state.unique())
 contest_categories = ['overall', 'chicken', 'ribs', 'pork', 'brisket']
-
+contest_categories_basics =     ['chicken', 'ribs', 'pork', 'brisket']
 
 # minimum scores for consideration (below a 5/5/5 (100 single or 400 overall))
-min_score_gen = 100
-min_score_ovr = 480
+min_score_basic = 100
+min_score_overall = 480
 
 # col_dict contains dictionaries to convert into dataframes. Each category will have a
 # dataframe where each column will represent a state's scores in that category.
@@ -23,25 +23,30 @@ for cat in contest_categories:
     for state in contest_states:
         col_dict[cat][state] = pd.Series(data=None)
 
+
 # for each state
 for state in contest_states:
     # create a state-specific data subset
     state_df = df[df.state == state]
     # for each contest in the state-specific subset
     for i, row in state_df.iterrows():
-        # for each category in the contest
-        for cat in contest_categories:
+        basics = 4
+        # for each basic category in the contest
+        for cat in contest_categories_basics:
             if isinstance(row[cat], pd.DataFrame):
                 cat_df = row[cat]
-                # filter out scores lower than minimums
-                if cat == 'overall':
-                    cat_df = cat_df[cat_df.score >= min_score_ovr]
-                else:
-                    cat_df = cat_df[cat_df.score >= min_score_gen]
+                cat_df = cat_df[cat_df.score >= min_score_basic]
                 # update the column dictionary
                 col_dict[cat][state] = col_dict[cat][state].append(cat_df.score)
             else:
-                continue
+                basics -= 1
+        # trying to weed out overall df's with non-basic scores included in their sums
+        if isinstance(row['overall'], pd.DataFrame):
+            cat_df = row['overall']
+            mx = cat_df['score'].max()
+            if (basics == 4) and (mx <= 720):
+                col_dict['overall'][state] = col_dict['overall'][state].append(cat_df.score)
+
     print "Finished scores for ", state
 
 # reset all series indices for cleanliness
