@@ -6,9 +6,9 @@ This project explores KCBS competition data from 2013-2016. I used Python (selen
 
 The visuals folder contains choropleths on three measures in the data. These maps were made with Tableau. They include;
 
-* competitions per state (red)
-* total prize dollars per state (green)
-* average prize dollars per (prized) competition (gold)
+* [competitions per state](visuals/contest_counts_2016.png)
+* [total prize dollars per state](visuals/total_prizing_2016.png)
+* [average prize dollars per (prized) competition](visuals/average_prizing_2016.png)
 
 ## Scoring
 
@@ -16,9 +16,17 @@ In Progress...
 
 Plotting the cumulative distribution function of category scores from the 5 most competing states (Missouri, Kansas, California, Tennessee, Georgia) seems to show stronger scoring in Georgia and Tennessee. 
 
-The similarity between plot lines correspond to geographic proximity and(/or in the case of California) contest counts. As a result, the higher scoring in Tennessee and Georgia may be a significant effect or the result of regional scoring biases or a smaller sample size.
+[Comparative CDF plots of category scores](visuals/cdf_scores.png)
 
-[CDF plots](visuals/cdf_scores.png)
+The similarity between plot lines correspond to geographic proximity and/or the number of contest held in each state (Georgia and Tennessee are 4th/5th).
+
+The higher scores in Tennessee and Georgia may be a significant effect, but additional testing needs to look at the significance of these states' distributions while controlling for the sample size. Another culprit could be regional scoring biases.
+
+## Team Names
+
+Creative team names are a tradition of the competitive barbeque circuit. Using the team names from my data set, I created a [wordcloud](visuals/wordcloud.png) to visualize the themes of these names. An automatic name generator might be a fun challenge, but the names are often pun-y which could be hard to automate.
+
+A full list of names can be found [on the KCBS website](https://www.kcbs.us/teams/all/1).
 
 ## Data Sources
 
